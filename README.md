@@ -75,7 +75,56 @@ python evaluate_downstream.py \
 
 
 
+
+## 6. Running on the Cluster (SLURM)
+
+Based on your cluster guidelines (`A100_usage.pdf`), here is the exact procedure to run the training job.
+
+**Resource Limits:**
+*   **Max GPUs:** 1 per user (A100)
+*   **Max CPUs:** 6 per user
+*   **Max Memory:** 32GB per user
+*   **Account/QoS:** `lfovia` / `lfovia_qos`
+
+### Step 1: Prepare the Submission Script
+I have included a script named `run_train.slurm` in the repo. It is configured with these exact limits.
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=mamba_train
+#SBATCH --account=lfovia
+#SBATCH --qos=lfovia_qos
+#SBATCH --cpus-per-task=6
+#SBATCH --mem=32G
+#SBATCH --gres=gpu:a100:1
+#SBATCH --output=training_%j.out
+#SBATCH --error=training_%j.err
+
+module load miniconda/3
+source activate mamba_arch
+
+export TMPDIR=~/tmp_build
+mkdir -p $TMPDIR
+
+python train.py --data_path processed_dataset --output_dir mamba_rna_checkpoints --epochs 15 --batch_size 64
+```
+
+### Step 2: Submit the Job
+```bash
+sbatch run_train.slurm
+```
+
+### Step 3: Monitor Progress
+```bash
+# Check status
+squeue --me
+
+# Watch output (replace JOBID)
+tail -f training_JOBID.out
+```
+
 ## Troubleshooting Installation
+
 
 ### Error: `CUDA version mismatch` (e.g., PyTorch 12.8 vs System 13.1)
 The error `detected CUDA version 13.1 mismatches...` means you installed the latest CUDA compiler (13.1) but your PyTorch was built for 12.8. They must match.
