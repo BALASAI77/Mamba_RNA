@@ -93,6 +93,20 @@ conda install -c nvidia cuda-nvcc=12.8
 MAX_JOBS=4 pip install mamba-ssm causal-conv1d
 ```
 
+### Error: `No space left on device`
+This happens because `pip` uses `/tmp` to build packages, which might be too small on some clusters.
+
+**Solution:** Point pip to a directory with more space (e.g., your home folder).
+
+```bash
+# Create a temp dir in your home folder
+mkdir -p ~/tmp_build
+export TMPDIR=~/tmp_build
+
+# Then try installing again
+pip install -r requirements.txt
+```
+
 ## 5. Inference
 
 
