@@ -74,20 +74,23 @@ python evaluate_downstream.py \
 ```
 
 
+
 ## Troubleshooting Installation
 
-### Error: `nvcc was not found` or `Failed to build mamba-ssm`
-If you see an error about `nvcc` missing or `bare_metal_version`, it means your environment lacks the CUDA compiler needed to build Mamba extensions.
+### Error: `CUDA version mismatch` (e.g., PyTorch 12.8 vs System 13.1)
+The error `detected CUDA version 13.1 mismatches...` means you installed the latest CUDA compiler (13.1) but your PyTorch was built for 12.8. They must match.
 
-**Solution:** Install the CUDA compiler in your Conda environment.
+**Solution:** Downgrade the compiler to match PyTorch.
 
 ```bash
-# Install NVIDIA CUDA compiler (ensure it matches your system/torch CUDA version roughly, e.g. 11.8 or 12.x)
-conda install -c nvidia cuda-nvcc
-pip install packaging
+# 1. Remove the wrong version (13.x)
+conda remove -y cuda-nvcc
 
-# Then try installing requirements again
-pip install -r requirements.txt
+# 2. Install the CORRECT version (12.8)
+conda install -c nvidia cuda-nvcc=12.8
+
+# 3. Now install Mamba
+MAX_JOBS=4 pip install mamba-ssm causal-conv1d
 ```
 
 ## 5. Inference
