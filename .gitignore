@@ -1,0 +1,20 @@
+# Data
+*.csv
+*.tar.gz
+processed_dataset/
+dummy_data/
+
+# Checkpoints and Outputs
+mamba_rna_checkpoints/
+results_cls/
+results_ssp/
+downstream_results/
+wandb/
+
+# Python
+__pycache__/
+*.pyc
+
+# IDEs
+.vscode/
+.idea/
