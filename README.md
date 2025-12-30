@@ -73,7 +73,25 @@ python evaluate_downstream.py \
     --model_path mamba_rna_checkpoints/best_checkpoint
 ```
 
+
+## Troubleshooting Installation
+
+### Error: `nvcc was not found` or `Failed to build mamba-ssm`
+If you see an error about `nvcc` missing or `bare_metal_version`, it means your environment lacks the CUDA compiler needed to build Mamba extensions.
+
+**Solution:** Install the CUDA compiler in your Conda environment.
+
+```bash
+# Install NVIDIA CUDA compiler (ensure it matches your system/torch CUDA version roughly, e.g. 11.8 or 12.x)
+conda install -c nvidia cuda-nvcc
+pip install packaging
+
+# Then try installing requirements again
+pip install -r requirements.txt
+```
+
 ## 5. Inference
+
 
 To run the model on a single sequence:
 
