@@ -30,15 +30,18 @@ source activate mamba_arch
 
 # 3. Install PyTorch with MATCHING CUDA Compiler (12.4)
 # This prevents the "CUDA 13.1 mismatch" error.
-conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia -y
+# We explicitly install cuda-nvcc to ensure the compiler is present for Mamba.
+conda install pytorch torchvision torchaudio pytorch-cuda=12.4 cuda-nvcc -c pytorch -c nvidia -y
 
 # 4. Install Helper Packages
 pip install packaging
 
 # 5. Install Mamba (Compilation Step)
-# We set MAX_JOBS to prevent crashing, and TMPDIR to prevent "No space left"
+# We set MAX_JOBS to prevent crashing, and TMPDIR to prevent "No space left"y
 mkdir -p ~/tmp_build
 export TMPDIR=~/tmp_build
+# Ensure nvcc is found in path
+export CUDA_HOME=$CONDA_PREFIX
 MAX_JOBS=4 pip install mamba-ssm causal-conv1d
 
 # 6. Install remaining requirements
