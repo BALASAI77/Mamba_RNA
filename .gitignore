@@ -3,6 +3,8 @@
 *.tar.gz
 processed_dataset/
 dummy_data/
+*.pt
+*.xz
 
 # Checkpoints and Outputs
 mamba_rna_checkpoints/

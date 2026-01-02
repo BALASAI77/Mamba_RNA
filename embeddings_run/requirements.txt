@@ -1,0 +1,8 @@
+torch>=2.0
+transformers>=4.40
+datasets
+pandas
+numpy
+# Core Mamba requirements (ensure CUDA is available)
+mamba-ssm
+causal-conv1d
